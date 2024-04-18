@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap';
+import axios from 'axios';
 
 export const AddToDo = () => {
   const [description, setDescription] = useState('');
   const handleDescriptionChange = (event) => {
-    setDescription(event);
+    setDescription(event.target.value);
   };
 
   async function handleAdd() {
     try {
-      alert('todo');
+      const response = await axios.post('http://localhost:7002/api/todoItems/', {
+        description,
+        isCompleted: false,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -39,10 +43,10 @@ export const AddToDo = () => {
           </Form.Group>
           <Form.Group as={Row} className="mb-3 offset-md-2" controlId="formAddTodoItem">
             <Stack direction="horizontal" gap={2}>
-              <Button variant="primary" onClick={() => handleAdd()}>
+              <Button variant="primary" onClick={handleAdd}>
                 Add Item
               </Button>
-              <Button variant="secondary" onClick={() => handleClear()}>
+              <Button variant="secondary" onClick={handleClear}>
                 Clear
               </Button>
             </Stack>
