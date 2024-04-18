@@ -20,7 +20,10 @@ export const ShowToDo = () => {
 
   async function handleMarkAsComplete(item) {
     try {
-      alert('todo');
+      const response = await axios.put(`http://localhost:7002/api/todoItems/${item.id}`, {
+        ...item,
+        isCompleted: true,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -31,7 +34,7 @@ export const ShowToDo = () => {
       <Col>
         <h1>
           Showing {items.length} Item(s){' '}
-          <Button variant="primary" className="pull-right" onClick={() => getItems()}>
+          <Button variant="primary" className="pull-right" onClick={getItems}>
             Refresh
           </Button>
         </h1>
@@ -48,11 +51,13 @@ export const ShowToDo = () => {
               <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.description}</td>
-                <td>
-                  <Button variant="warning" size="sm" onClick={() => handleMarkAsComplete(item)}>
-                    Mark as completed
-                  </Button>
-                </td>
+                {!item.isCompleted && (
+                  <td>
+                    <Button variant="warning" size="sm" onClick={() => handleMarkAsComplete(item)}>
+                      Mark as completed
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
