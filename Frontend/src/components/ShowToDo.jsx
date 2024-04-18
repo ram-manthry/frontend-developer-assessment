@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
+import axios from 'axios';
 
 export const ShowToDo = () => {
   const [items, setItems] = useState([]);
 
+  useEffect(() => {
+    getItems();
+  }, []);
+
   async function getItems() {
     try {
-      alert('todo');
+      const response = await axios.get('http://localhost:7002/api/todoItems/');
+      setItems(response.data);
     } catch (error) {
       console.error(error);
     }
