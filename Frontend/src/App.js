@@ -1,5 +1,5 @@
 import './App.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import React, { useEffect } from 'react';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
@@ -17,17 +17,8 @@ const App = () => {
     <div className="App">
       <Container>
         <Header />
-        <Row>
-          <Col>
-            <AddToDo />
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col>
-            <ShowToDo />
-          </Col>
-        </Row>
+        <AddToDo />
+        <ShowToDo />
       </Container>
       <Footer />
     </div>
