@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap';
 import axios from 'axios';
+import { ErrorMessage } from './ErrorMessage';
 
-export const AddToDo = () => {
+export const AddToDo = ({ onAdd }) => {
   const [description, setDescription] = useState('');
+  const [error, setError] = useState('');
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
@@ -14,8 +16,10 @@ export const AddToDo = () => {
         description,
         isCompleted: false,
       });
+      setDescription('');
+      onAdd();
     } catch (error) {
-      console.error(error);
+      setError(error.response.data);
     }
   }
 
@@ -24,35 +28,38 @@ export const AddToDo = () => {
   }
 
   return (
-    <Row>
-      <Col>
-        <Container>
-          <h1>Add Item</h1>
-          <Form.Group as={Row} className="mb-3" controlId="formAddTodoItem">
-            <Form.Label column sm="2">
-              Description
-            </Form.Label>
-            <Col md="6">
-              <Form.Control
-                type="text"
-                placeholder="Enter description..."
-                value={description}
-                onChange={handleDescriptionChange}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3 offset-md-2" controlId="formAddTodoItem">
-            <Stack direction="horizontal" gap={2}>
-              <Button variant="primary" onClick={handleAdd}>
-                Add Item
-              </Button>
-              <Button variant="secondary" onClick={handleClear}>
-                Clear
-              </Button>
-            </Stack>
-          </Form.Group>
-        </Container>
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col>
+          <Container>
+            <h1>Add Item</h1>
+            <Form.Group as={Row} className="mb-3" controlId="formAddTodoItem">
+              <Form.Label column sm="2">
+                Description
+              </Form.Label>
+              <Col md="6">
+                <Form.Control
+                  type="text"
+                  placeholder="Enter description..."
+                  value={description}
+                  onChange={handleDescriptionChange}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3 offset-md-2" controlId="formAddTodoItem">
+              <Stack direction="horizontal" gap={2}>
+                <Button variant="primary" onClick={handleAdd}>
+                  Add Item
+                </Button>
+                <Button variant="secondary" onClick={handleClear}>
+                  Clear
+                </Button>
+              </Stack>
+            </Form.Group>
+          </Container>
+        </Col>
+      </Row>
+      <ErrorMessage message={error} onClose={() => setError('')} />
+    </>
   );
 };
