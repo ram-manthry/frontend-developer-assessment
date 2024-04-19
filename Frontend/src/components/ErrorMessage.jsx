@@ -5,7 +5,7 @@ import Toast from 'react-bootstrap/Toast';
 export const ErrorMessage = ({ message, onClose }) => {
   return (
     <ToastContainer position="bottom-end" className="position-fixed">
-      <Toast show={message && message.length > 0} onClose={onClose} bg="danger">
+      <Toast show={!!message} onClose={onClose} bg="danger" delay={3000} autohide>
         <Toast.Header>
           <strong className="me-auto">Action Failed!</strong>
         </Toast.Header>
