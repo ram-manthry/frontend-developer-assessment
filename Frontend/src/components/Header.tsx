@@ -1,4 +1,3 @@
-import React from 'react';
 import { Image, Row, Col } from 'react-bootstrap';
 import { Instructions } from './Instructions';
 

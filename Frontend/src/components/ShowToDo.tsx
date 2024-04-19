@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import axios from 'axios';
+import { TodoItem } from '../types/ToDo';
 
 export const ShowToDo = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<TodoItem[]>([]);
 
   useEffect(() => {
     getItems();
@@ -18,7 +19,7 @@ export const ShowToDo = () => {
     }
   }
 
-  async function handleMarkAsComplete(item) {
+  async function handleMarkAsComplete(item: TodoItem) {
     try {
       const response = await axios.put(`http://localhost:7002/api/todoItems/${item.id}`, {
         ...item,

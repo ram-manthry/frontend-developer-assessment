@@ -1,8 +1,12 @@
-import React from 'react';
 import { ToastContainer } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 
-export const ErrorMessage = ({ message, onClose }) => {
+type Props = {
+  message: string;
+  onClose: () => void;
+};
+
+export const ErrorMessage = ({ message, onClose }: Props) => {
   return (
     <ToastContainer position="bottom-end" className="position-fixed">
       <Toast show={!!message} onClose={onClose} bg="danger" delay={3000} autohide>

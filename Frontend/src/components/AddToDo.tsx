@@ -3,10 +3,14 @@ import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap';
 import axios from 'axios';
 import { ErrorMessage } from './ErrorMessage';
 
-export const AddToDo = ({ onAdd }) => {
+type Props = {
+  onAdd: () => void;
+};
+
+export const AddToDo = ({ onAdd }: Props) => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
-  const handleDescriptionChange = (event) => {
+  const handleDescriptionChange = (event: { target: { value: React.SetStateAction<string> } }) => {
     setDescription(event.target.value);
   };
 
@@ -16,10 +20,14 @@ export const AddToDo = ({ onAdd }) => {
         description,
         isCompleted: false,
       });
-      setDescription('');
-      onAdd();
+      if (response.status === 200) {
+        setDescription('');
+        onAdd();
+      }
     } catch (error) {
-      setError(error.response.data);
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data);
+      }
     }
   }
 
