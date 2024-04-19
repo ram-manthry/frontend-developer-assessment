@@ -24,6 +24,10 @@ export const ShowToDo = () => {
         ...item,
         isCompleted: true,
       });
+      if (response.status === 200) {
+        getItems();
+      }
+      getItems();
     } catch (error) {
       console.error(error);
     }
