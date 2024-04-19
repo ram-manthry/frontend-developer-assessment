@@ -1,45 +1,15 @@
-import { useState, useEffect } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
-import axios from 'axios';
-import { TodoItem } from '../types/ToDo';
+import useTodos from '../hooks/useTodos';
 
 export const ShowToDo = () => {
-  const [items, setItems] = useState<TodoItem[]>([]);
-
-  useEffect(() => {
-    getItems();
-  }, []);
-
-  async function getItems() {
-    try {
-      const response = await axios.get('/api/todoItems');
-      setItems(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function handleMarkAsComplete(item: TodoItem) {
-    try {
-      const response = await axios.put(`/api/todoItems/${item.id}`, {
-        ...item,
-        isCompleted: true,
-      });
-      if (response.status === 200 || response.status === 201) {
-        getItems();
-      }
-      getItems();
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const { items, fetchItems, markAsComplete } = useTodos();
 
   return (
     <Row className="mt-2">
       <Col>
         <h1>
           Showing {items.length} Item(s){' '}
-          <Button variant="primary" className="pull-right" onClick={getItems}>
+          <Button variant="primary" className="pull-right" onClick={fetchItems}>
             Refresh
           </Button>
         </h1>
@@ -58,7 +28,7 @@ export const ShowToDo = () => {
                 <td>{item.description}</td>
                 {!item.isCompleted && (
                   <td>
-                    <Button variant="warning" size="sm" onClick={() => handleMarkAsComplete(item)}>
+                    <Button variant="warning" size="sm" onClick={() => markAsComplete(item)}>
                       Mark as completed
                     </Button>
                   </td>

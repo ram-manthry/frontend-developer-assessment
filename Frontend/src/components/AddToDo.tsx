@@ -1,39 +1,13 @@
-import React, { useState } from 'react';
 import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap';
-import axios from 'axios';
 import { ErrorMessage } from './ErrorMessage';
+import useAddTodo from '../hooks/useAddTodo';
 
 type Props = {
   onAdd: () => void;
 };
 
 export const AddToDo = ({ onAdd }: Props) => {
-  const [description, setDescription] = useState('');
-  const [error, setError] = useState('');
-  const handleDescriptionChange = (event: { target: { value: React.SetStateAction<string> } }) => {
-    setDescription(event.target.value);
-  };
-
-  async function handleAdd() {
-    try {
-      const response = await axios.post('/api/todoItems/', {
-        description,
-        isCompleted: false,
-      });
-      if (response.status === 200 || response.status === 201) {
-        setDescription('');
-        onAdd();
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setError(error.response?.data);
-      }
-    }
-  }
-
-  function handleClear() {
-    setDescription('');
-  }
+  const { description, error, handleDescriptionChange, handleAdd, handleClear, handleErrorDismiss } = useAddTodo(onAdd);
 
   return (
     <>
@@ -67,7 +41,7 @@ export const AddToDo = ({ onAdd }: Props) => {
           </Container>
         </Col>
       </Row>
-      <ErrorMessage message={error} onClose={() => setError('')} />
+      <ErrorMessage message={error} onClose={handleErrorDismiss} />
     </>
   );
 };
